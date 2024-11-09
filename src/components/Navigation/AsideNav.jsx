@@ -9,6 +9,7 @@ import {
   Users,
   Building2,
   LifeBuoy,
+  User,
   Settings,
 } from "lucide-react";
 import Sidebar, { SidebarItem } from "./Sidebar";
@@ -60,6 +61,11 @@ const AsideNav = () => {
             icon={<ChartColumnIncreasing size={20} />}
             text="Analytics"
             location="/analytics"
+          />
+          <SidebarItem
+            icon={<User size={20} />}
+            text="Profile"
+            location="/profile"
           />
           <hr className="my-3" />
           <SidebarItem
