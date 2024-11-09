@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../axios"; // Assuming you have your axios instance
 import styles from "./StudentSignup.module.css"; // CSS module for styling
+import { useNavigate } from "react-router-dom";
 
 const skillsOptions = [
   "JavaScript", "React", "Node.js", "Python", "Java", "C++", "SQL", "HTML", "CSS",
@@ -8,6 +9,7 @@ const skillsOptions = [
 ];
 
 const StudentSignup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     resume: null,
     linkedin: "",
@@ -98,6 +100,7 @@ const StudentSignup = () => {
         linkedin: "",
         selectedSkills: [],
       });
+      navigate("/profile");
     } catch (err) {
       setError("There was an error creating the student profile");
       console.error(err);
