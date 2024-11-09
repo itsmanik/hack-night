@@ -90,7 +90,7 @@ const Signup = () => {
 
       console.log(response.data.message);
       alert("Sign-up successful!");
-      navigate(`/signup/${formData.role}`);
+      navigate(`/login/${formData.role}`);
     } catch (error) {
       console.error("There was an error registering the user!", error);
       setError(error.response?.data?.message || "An error occurred during registration");

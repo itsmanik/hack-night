@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../axios";
 
 const Login = () => {
@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the form from submitting and reloading the page
@@ -16,7 +17,6 @@ const Login = () => {
       setErrorMessage("Both username and password are required");
       return;
     }
-
     try {
       // Send the login request to the backend
       const response = await axiosInstance.post(
@@ -29,7 +29,7 @@ const Login = () => {
       localStorage.setItem("jwtToken", access_token); // Store the JWT token
 
       // Redirect the user to a different page (e.g., dashboard)
-      navigate("/dashboard"); // Adjust the path as necessary
+      navigate(`/signup/${params.id}`); // Adjust the path as necessary
     } catch (error) {
       // Handle errors (e.g., invalid credentials)
       if (error.response && error.response.status === 401) {
