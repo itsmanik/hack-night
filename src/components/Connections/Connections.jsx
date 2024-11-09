@@ -55,7 +55,7 @@ const Connections = () => {
           id: selectedInvitation.id,
           name: selectedInvitation.name,
           job: selectedInvitation.job,
-          imgScr: selectedInvitation.imgScr,
+          imgScr: selectedInvitation.profile_picture,
         },
       ]);
       // Optionally, remove the invitation from the list
@@ -95,7 +95,7 @@ const Connections = () => {
             {invitations.map((invitation, index) => (
               <div key={index} className={classes.invitationCard}>
                 <img
-                  src={invitation.imgScr}
+                  src={invitation.profile_picture}
                   alt={invitation.name}
                   className="w-12 h-12 rounded-full"
                 />
@@ -125,7 +125,7 @@ const Connections = () => {
             {connections.map((connection, index) => (
               <div key={index} className={classes.connectionCard}>
                 <img
-                  src={connection.imgScr}
+                  src={connection.profile_picture}
                   alt={connection.name}
                   className="w-32 h-32 mx-auto rounded-full"
                 />
