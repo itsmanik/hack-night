@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import styles from "./AlumniSignup.module.css"; // Assuming you have a CSS module for styling
+import axios from "../../axios"; // Install axios with `npm install axios` if not installed
+import styles from "./AlumniSignup.module.css";
 import { useNavigate } from "react-router-dom";
 
-// Sample skill options
 const skillsOptions = [
   "JavaScript",
   "React",
@@ -23,120 +23,94 @@ const skillsOptions = [
 
 const AlumniSignup = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     resume: null,
     linkedin: "",
     selectedSkills: [],
     experience: "",
-    openForMentorship: "No", // Default is "No"
+    openForMentorship: "No",
+    position: "",
+    company: "",
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      resume: e.target.files[0],
-    });
-  };
-
-  const handleLinkedInChange = (e) => {
-    setFormData({
-      ...formData,
-      linkedin: e.target.value,
-    });
-  };
-
-  const handlePositionChange = (e) => {
-    setFormData({
-      ...formData,
-      position: e.target.value,
-    });
-  };
-
-  const handleCompanyChange = (e) => {
-    setFormData({
-      ...formData,
-      company: e.target.value,
-    });
-  };
+  const handleFileChange = (e) =>
+    setFormData({ ...formData, resume: e.target.files[0] });
+  const handleLinkedInChange = (e) =>
+    setFormData({ ...formData, linkedin: e.target.value });
+  const handlePositionChange = (e) =>
+    setFormData({ ...formData, position: e.target.value });
+  const handleCompanyChange = (e) =>
+    setFormData({ ...formData, company: e.target.value });
+  const handleExperienceChange = (e) =>
+    setFormData({ ...formData, experience: e.target.value });
+  const handleMentorshipChange = (e) =>
+    setFormData({ ...formData, openForMentorship: e.target.value });
 
   const handleSkillToggle = (skill) => {
     setFormData((prevData) => {
       const newSkills = prevData.selectedSkills.includes(skill)
         ? prevData.selectedSkills.filter((s) => s !== skill)
         : [...prevData.selectedSkills, skill];
-
       return { ...prevData, selectedSkills: newSkills };
     });
   };
 
-  const handleExperienceChange = (e) => {
-    setFormData({
-      ...formData,
-      experience: e.target.value,
-    });
-  };
-
-  const handleMentorshipChange = (e) => {
-    setFormData({
-      ...formData,
-      openForMentorship: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simple validation
-    if (!formData.resume) {
-      setError("Resume is required");
-      return;
-    }
-
-    if (!formData.linkedin) {
-      setError("LinkedIn username is required");
-      return;
-    }
-
-    if (!formData.position) {
-      setError("Position is required");
-      return;
-    }
-
-    if (!formData.company) {
-      setError("Company is required");
-      return;
-    }
-
     if (
-      !formData.experience ||
-      isNaN(formData.experience) ||
-      formData.experience <= 0
+      !formData.resume ||
+      !formData.linkedin ||
+      !formData.position ||
+      !formData.company ||
+      !formData.experience
     ) {
-      setError("Please enter a valid number of years of experience");
+      setError("Please fill out all required fields");
       return;
     }
 
-    // Successful form submission
-    setError("");
-    setSuccess("Registration successful!");
+    const data = new FormData();
+    data.append("resume", formData.resume);
+    data.append(
+      "json_data",
+      JSON.stringify({
+        linkedin: formData.linkedin,
+        position: formData.position,
+        company: formData.company,
+        experience_years: formData.experience,
+        skills: formData.selectedSkills,
+        openForMentorship: formData.openForMentorship,
+      })
+    );
 
-    console.log("Form data submitted:", formData);
+    try {
+      const response = await axios.post("/api/profile/alumni", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`, // Assuming token stored in local storage
+        },
+      });
 
-    // Reset form
-    setFormData({
-      resume: null,
-      linkedin: "",
-      position: "",
-      company: "",
-      selectedSkills: [],
-      experience: "",
-      openForMentorship: "No",
-    });
-    navigate("/profile");
+      if (response.status === 201) {
+        setSuccess("Registration successful!");
+        setError("");
+        setFormData({
+          resume: null,
+          linkedin: "",
+          selectedSkills: [],
+          experience: "",
+          openForMentorship: "No",
+          position: "",
+          company: "",
+        });
+        navigate("/profile");
+      }
+    } catch (err) {
+      setError(err.response ? err.response.data.error : "An error occurred");
+    }
   };
 
   return (
