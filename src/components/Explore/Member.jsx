@@ -28,7 +28,7 @@ const Member = (props) => {
         alt={props.alumnus.name}
         className={classes.img}
       />
-      <div>
+      <div className={classes.one}>
         <h2 className={classes.username}>{props.alumnus.name}</h2>
         <span className={classes.position}>
           {props.alumnus.position}, {props.alumnus.company}

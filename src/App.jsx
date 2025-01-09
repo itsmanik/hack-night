@@ -20,6 +20,8 @@ import Connections from "./components/Connections/Connections";
 import Help from "./components/Help/Help";
 import AnalyticsPage from "./components/Analytics/AnalyticsPage";
 import Profile from "./components/Profile/Profile";
+import AnnouncementsList from "./components/Announcements/AnnouncementList";
+import PostAnnouncement from "./components/Announcements/PostAnnouncement";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +104,14 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/post-announcement",
+        element: <PostAnnouncement />,
+      },
+      {
+        path: "/announcements",
+        element: <AnnouncementsList />,
       },
     ],
   },

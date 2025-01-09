@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import classes from "./Navbar.module.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../context/auth-context";
 
 const ProfileDropDown = (props) => {
   const [state, setState] = useState(false);
@@ -66,6 +68,7 @@ const ProfileDropDown = (props) => {
 };
 
 const Navbar = () => {
+  const context = useContext(AuthContext);
   const [state, setState] = useState(false);
 
   const navigation = [
@@ -90,7 +93,7 @@ const Navbar = () => {
         <div className="items-center gap-x-5 px-2 max-w-screen-xl mx-auto lg:flex lg:px-4">
           <div className="flex items-center justify-between py-2 lg:py-3 lg:block">
             <a href="#" className="text-lg font-bold text-[#9147FF]">
-              LOGO
+              {context.role === undefined ? "LOGO" : context.role.toUpperCase()}
             </a>
             <div className="lg:hidden">
               <button
@@ -147,7 +150,7 @@ const Navbar = () => {
               <div className="flex align-middle items-center justify-center gap-x-6 space-y-3 lg:space-y-0">
                 <li>
                   <Link
-                    to="/login"
+                    to="/login/alumni"
                     className="block my-3 lg:ml-10 py-[0.4rem] px-3 text-white font-bold text-center bg-[#2F2F35] hover:bg-[#3f3f45] border rounded lg:border-none"
                   >
                     Log In

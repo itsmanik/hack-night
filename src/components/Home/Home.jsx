@@ -4,7 +4,7 @@ import AuthContext from "../../context/auth-context";
 
 const Home = () => {
   const context = useContext(AuthContext);
-  console.log("contextthttt:  " + context);
+  console.log(context.role);
   return (
     <>
       <section className="text-lightWhite -translate-y-14">
@@ -16,6 +16,7 @@ const Home = () => {
               <span className="dark:text-violet-600">Mentorship</span> and
               Networking
             </h1>
+            
             <p className="mt-6 mb-8 text-lg sm:mb-12">
               Connect with alumni for career advice, mentorship, and networking
               opportunities.

@@ -1,9 +1,19 @@
 import AuthContext from "./auth-context";
 import { useState, useEffect } from "react";
+import axiosInstance from "../axios";
 
 const AuthProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [who, setWho] = useState("");
+  useEffect(() => {
+    try {
+      axiosInstance.get("/api/get_role").then((response) => {
+        setWho(response.data);
+      });
+    } catch (error) {
+      setWho("student");
+    }
+  });
 
   useEffect(() => {
     const items = localStorage.getItem("access_token");
@@ -13,9 +23,7 @@ const AuthProvider = (props) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={isLoggedIn}>
-      {props.children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={who}>{props.children}</AuthContext.Provider>
   );
 };
 

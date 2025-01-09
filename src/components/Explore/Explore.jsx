@@ -67,15 +67,7 @@ const Explore = () => {
           placeholder="Search for alumni by name..."
           className={classes.searchInput}
         />
-        <select
-          value={selectedFilter}
-          onChange={handleFilterChange}
-          className={classes.dropdown}
-        >
-          <option value="all">All</option>
-          <option value="industry">Industry</option>
-          <option value="skills">Skills</option>
-        </select>
+        
 
         {/* Additional inputs based on selected filter */}
         {selectedFilter === "industry" && (

@@ -49,6 +49,7 @@
   width: 100%;
   font-weight: 600;
   letter-spacing: 0.025em;
+  margin-top: auto;
 }
 
 .searchBar {
@@ -57,6 +58,10 @@
   gap: 10px;
   padding: 20px 0;
   color: black;
+}
+
+.one {
+  padding-bottom: 1rem;
 }
 
 .searchInput {

@@ -31,6 +31,7 @@ const AlumniSignup = () => {
     openForMentorship: "No",
     position: "",
     company: "",
+    passout: "",
   });
 
   const [error, setError] = useState("");
@@ -48,6 +49,8 @@ const AlumniSignup = () => {
     setFormData({ ...formData, experience: e.target.value });
   const handleMentorshipChange = (e) =>
     setFormData({ ...formData, openForMentorship: e.target.value });
+  const handlePassoutChange = (e) =>
+    setFormData({ ...formData, passout: e.target.value });
 
   const handleSkillToggle = (skill) => {
     setFormData((prevData) => {
@@ -66,7 +69,8 @@ const AlumniSignup = () => {
       !formData.linkedin ||
       !formData.position ||
       !formData.company ||
-      !formData.experience
+      !formData.experience ||
+      !formData.passout
     ) {
       setError("Please fill out all required fields");
       return;
@@ -83,6 +87,7 @@ const AlumniSignup = () => {
         experience_years: formData.experience,
         skills: formData.selectedSkills,
         openForMentorship: formData.openForMentorship,
+        passout: formData.passout,
       })
     );
 
@@ -105,6 +110,7 @@ const AlumniSignup = () => {
           openForMentorship: "No",
           position: "",
           company: "",
+          passout: "",
         });
         navigate("/profile");
       }
@@ -134,7 +140,22 @@ const AlumniSignup = () => {
             className={styles.input}
           />
         </div>
-
+        {/* LinkedIn Profile URL */}
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="passout">
+            Passout Year:
+          </label>
+          <input
+            type="text"
+            id="passout"
+            name="passout"
+            value={formData.passout}
+            onChange={handlePassoutChange}
+            required
+            placeholder="Passout Year"
+            className={styles.input}
+          />
+        </div>
         {/* LinkedIn Profile URL */}
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="linkedin">

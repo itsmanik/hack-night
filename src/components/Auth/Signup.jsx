@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from '../../axios'; // Import axios instance
+import axiosInstance from "../../axios"; // Import axios instance
 
 // Sample options for the role select box
 const roleOptions = ["student", "college", "alumni"];
+const collegeOptions = [
+  "Mangalore Institute of Technology and Engineering",
+  "Sahyadri Engineering College",
+  "Alvas Engineering College",
+];
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,9 +19,9 @@ const Signup = () => {
     phone: "",
     email: "",
     role: "student", // default role
-    collegeName: "", // new college name field
-    password: "", // new password field
-    profilePicture: null, // file for profile picture
+    collegeName: collegeOptions[0], // default to the first college in the list
+    password: "",
+    profilePicture: null,
   });
 
   const [error, setError] = useState("");
@@ -26,12 +31,12 @@ const Signup = () => {
     if (type === "file") {
       setFormData((prevData) => ({
         ...prevData,
-        profilePicture: files[0], // Handle file uploads
+        profilePicture: files[0],
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value, // Update state for other form inputs
+        [name]: value,
       }));
     }
   };
@@ -39,52 +44,49 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simple validation
     if (
       !formData.username ||
       !formData.name ||
       !formData.phone ||
       !formData.email ||
-      !formData.collegeName ||
       !formData.password
     ) {
       setError("All fields are required");
       return;
     }
 
-    // Validate email format
     if (!/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(formData.email)) {
       setError("Please enter a valid email address");
       return;
     }
 
-    // Validate phone number format
     if (!/^\d{10}$/.test(formData.phone)) {
       setError("Please enter a valid 10-digit phone number");
       return;
     }
 
     const data = new FormData();
-    data.append("json_data", JSON.stringify({
-      username: formData.username,
-      password: formData.password,
-      name: formData.name,
-      phone_number: formData.phone,
-      email: formData.email,
-      role: formData.role,
-      college_name: formData.collegeName,
-    }));
+    data.append(
+      "json_data",
+      JSON.stringify({
+        username: formData.username,
+        password: formData.password,
+        name: formData.name,
+        phone_number: formData.phone,
+        email: formData.email,
+        role: formData.role,
+        college_name: formData.collegeName,
+      })
+    );
 
-    // Append the profile picture if it exists
     if (formData.profilePicture) {
       data.append("profile_picture", formData.profilePicture);
     }
 
     try {
-      // Make a request to the Flask API to register the user
       const response = await axiosInstance.post("/api/register", data, {
         headers: {
-          "Content-Type": "multipart/form-data", // Set the content type to handle form data
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -93,20 +95,21 @@ const Signup = () => {
       navigate(`/login/${formData.role}`);
     } catch (error) {
       console.error("There was an error registering the user!", error);
-      setError(error.response?.data?.message || "An error occurred during registration");
+      setError(
+        error.response?.data?.message || "An error occurred during registration"
+      );
     }
 
     setError("");
     console.log("Form data submitted:", formData);
 
-    // Reset form after successful submission
     setFormData({
       username: "",
       name: "",
       phone: "",
       email: "",
       role: "student",
-      collegeName: "",
+      collegeName: collegeOptions[0],
       password: "",
       profilePicture: null,
     });
@@ -114,13 +117,18 @@ const Signup = () => {
 
   return (
     <div className="signup text-black max-w-4xl mx-auto p-6 border-[1px] border-[#4d4d4d] rounded-xl">
-      <h2 className="text-3xl font-bold mb-4 text-center text-lightWhite">Sign Up</h2>
+      <h2 className="text-3xl font-bold mb-4 text-center text-lightWhite">
+        Sign Up
+      </h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Row 1: Username & Full Name */}
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="username">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="username"
+            >
               Username:
             </label>
             <input
@@ -135,7 +143,10 @@ const Signup = () => {
           </div>
 
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="name">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="name"
+            >
               Full Name:
             </label>
             <input
@@ -153,7 +164,10 @@ const Signup = () => {
         {/* Row 2: Phone & Email */}
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="phone">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="phone"
+            >
               Phone Number:
             </label>
             <input
@@ -169,7 +183,10 @@ const Signup = () => {
           </div>
 
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="email">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="email"
+            >
               Email Address:
             </label>
             <input
@@ -184,25 +201,36 @@ const Signup = () => {
           </div>
         </div>
 
-        {/* Row 3: College Name & Role */}
+        {/* Row 3: College Name (Dropdown) & Role */}
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="collegeName">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="collegeName"
+            >
               College Name:
             </label>
-            <input
+            <select
               className="mt-1 block w-full p-2 border border-gray-900 rounded-md"
-              type="text"
               id="collegeName"
               name="collegeName"
               value={formData.collegeName}
               onChange={handleChange}
               required
-            />
+            >
+              {collegeOptions.map((college) => (
+                <option key={college} value={college}>
+                  {college}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="role">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="role"
+            >
               Role:
             </label>
             <select
@@ -225,7 +253,10 @@ const Signup = () => {
         {/* Row 4: Profile Picture & Password */}
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-white text-sm font-medium" htmlFor="profilePicture">
+            <label
+              className="block text-white text-sm font-medium"
+              htmlFor="profilePicture"
+            >
               Profile Picture:
             </label>
             <input
@@ -239,7 +270,10 @@ const Signup = () => {
           </div>
 
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-400" htmlFor="password">
+            <label
+              className="block text-sm font-medium text-gray-400"
+              htmlFor="password"
+            >
               Password:
             </label>
             <input
@@ -254,7 +288,10 @@ const Signup = () => {
           </div>
         </div>
 
-        <button className="mt-6 w-full bg-purple hover:bg-darkPurple text-white p-2 rounded-md" type="submit">
+        <button
+          className="mt-6 w-full bg-purple hover:bg-darkPurple text-white p-2 rounded-md"
+          type="submit"
+        >
           Sign Up
         </button>
       </form>

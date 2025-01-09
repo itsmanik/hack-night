@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Users,
   Building2,
+  MicVocal,
   LifeBuoy,
   User,
   Settings,
@@ -36,12 +37,6 @@ const AsideNav = () => {
             location="/jobs"
           />
           <SidebarItem
-            icon={<MessageSquareMore size={20} />}
-            text="Messaging"
-            location="/messaging"
-            active={true}
-          />
-          <SidebarItem
             icon={<Bell size={20} />}
             text="Notifications"
             location="/notifications"
@@ -53,14 +48,25 @@ const AsideNav = () => {
             location="/connections"
           />
           <SidebarItem
+            icon={<MicVocal size={20} />}
+            text="Announcements"
+            location="/announcements"
+          />
+          {/* <SidebarItem
             icon={<Building2 size={20} />}
             text="Companies"
             location="/companies"
-          />
+          /> */}
           <SidebarItem
             icon={<ChartColumnIncreasing size={20} />}
             text="Analytics"
             location="/analytics"
+          />
+          <SidebarItem
+            icon={<MessageSquareMore size={20} />}
+            text="Messaging"
+            location="/messaging"
+            active={true}
           />
           <SidebarItem
             icon={<User size={20} />}
