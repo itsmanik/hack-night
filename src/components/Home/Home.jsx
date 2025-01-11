@@ -6,7 +6,7 @@ const Home = () => {
   const context = useContext(AuthContext);
   console.log(context.role);
   return (
-    <>
+    <> 
       <section className="text-lightWhite -translate-y-14">
         <div className="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
           <div className="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
